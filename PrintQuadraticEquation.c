@@ -1,5 +1,6 @@
 #include <stdio.h>
-#include <math.h>
+
+float mysqrt(int n);
 
 int main()
 {
@@ -82,13 +83,13 @@ int main()
     if (d < 0)
     {	
         // complex roots
-        printf("first sol = %.2lf + i%.2lf\n", -b / (double)(2 * a), sqrt(-d) / (2 * a));
-        printf("second sol = %.2lf - i%.2lf\n", -b / (double)(2 * a),sqrt(-d) / (2 * a));
+        printf("first sol = %.2lf + i%.2lf\n", -b / ((double)(a)*2), mysqrt(-d) / (2 * a));
+        printf("second sol = %.2lf - i%.2lf\n", -b / ((double)(a)*2), mysqrt(-d) / (2 * a));
     }
     else
     {	// real roots
-        root1 = (-b + sqrt(d)) / (2 * a);
-        root2 = (-b - sqrt(d)) / (2 * a);
+        root1 = (-b + mysqrt(d)) / (2 * a);
+        root2 = (-b - mysqrt(d)) / (2 * a);
 
         printf("first sol = %.2lf\n", root1);
         printf("second sol = %.2lf\n", root2);
@@ -97,3 +98,26 @@ int main()
     return 0;
 }
 
+float mysqrt(int n)
+{
+    float temp, sqrt;
+
+    // store the half of the given number e.g from 256 => 128
+    sqrt = n / 2;
+    temp = 0;
+
+    // Iterate until sqrt is different of temp, that is updated on the loop
+    while (sqrt != temp) {
+        // initially 0, is updated with the initial value of 128
+        // (on second iteration = 65)
+        // and so on
+        temp = sqrt;
+
+        // Then, replace values (256 / 128 + 128 ) / 2 = 65
+        // (on second iteration 34.46923076923077)
+        // and so on
+        sqrt = (n / temp + temp) / 2;
+    }
+
+    return sqrt;
+}
